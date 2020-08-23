@@ -48,6 +48,10 @@ cd /tmp && \
 # ouimeaux
 pip3 install -U ouimeaux && \
 
+# add zigbee2mqtt plugin
+cd /src/domoticz && \
+git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt && \
+
 # remove git and tmp dirs
 apt-get remove -y git cmake linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
    apt-get autoremove -y && \ 
