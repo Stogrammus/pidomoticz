@@ -16,7 +16,7 @@ libusb-0.1-4 libusb-dev \
 zlib1g-dev \
 libudev-dev \
 python3-dev python3-pip \
-       fail2ban && \
+fail2ban && \
     # linux-headers-generic
 
 ## OpenZwave installation
