@@ -22,7 +22,6 @@ libsqlite3-0 \
 libsqlite3-dev \
 curl \
 libcurl3 \
-libcurl4-openssl-dev \
 libusb-0.1-4 \
 libusb-dev \
 zlib1g-dev \
