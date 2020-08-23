@@ -28,10 +28,10 @@ zlib1g-dev \
 libudev-dev \
 python3-dev \
 python3-pip \
-fail2ban && \
+fail2ban
     # linux-headers-generic
 ## install cmake
-wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz && \
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz && \
 tar -xzvf cmake-3.17.0.tar.gz && \
 rm cmake-3.17.0.tar.gz && \
 cd cmake-3.17.0 && \
@@ -39,21 +39,28 @@ cd cmake-3.17.0 && \
 make && \
 make install && \
 cd .. && \
-rm -Rf cmake-3.17.0 && \
+rm -Rf cmake-3.17.0
 
 ## OpenZwave installation
 # grep git version of openzwave
-git clone --depth 2 https://github.com/OpenZWave/open-zwave.git /src/open-zwave && \
+RUN git clone --depth 2 https://github.com/OpenZWave/open-zwave.git /src/open-zwave && \
 cd /src/open-zwave && \
 # compile
 make && \
 
 # "install" in order to be found by domoticz
-ln -s /src/open-zwave /src/open-zwave-read-only && \
+ln -s /src/open-zwave /src/open-zwave-read-only
+# Liboost
+
+RUN apt remove --purge --auto-remove libboost-dev libboost-thread-dev libboost-system-dev libboost-atomic-dev libboost-regex-dev libboost-chrono-dev && \
+mkdir boost && cd boost && wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz && tar xfz boost_1_72_0.tar.gz && \
+cd boost_1_72_0/ && ./bootstrap.sh && ./b2 stage threading=multi link=static --with-thread --with-system && ./b2 install threading=multi link=static --with-thread --with-system && \
+cd ../../ && rm -Rf boost/
 
 ## Domoticz installation
 # clone git source in src
-git clone -b "${DOMOTICZ_VERSION}" --depth 2 https://github.com/domoticz/domoticz.git /src/domoticz && \
+
+RUN git clone -b "${DOMOTICZ_VERSION}" --depth 2 https://github.com/domoticz/domoticz.git /src/domoticz && \
 # Domoticz needs the full history to be able to calculate the version string
 cd /src/domoticz && \
 git fetch --unshallow && \
