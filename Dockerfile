@@ -6,17 +6,17 @@ ARG DOMOTICZ_VERSION="master"
 
 # install packages
 RUN apt-get update && apt-get install -y \
-	git \
-	libssl1.0.2 libssl-dev \
-	build-essential cmake \
-	libboost-all-dev \
-	libsqlite3-0 libsqlite3-dev \
-	curl libcurl3 libcurl4-openssl-dev \
-	libusb-0.1-4 libusb-dev \
-	zlib1g-dev \
-	libudev-dev \
-	python3-dev python3-pip \
-        fail2ban && \
+git \
+libssl1.0.2 libssl-dev \
+build-essential cmake \
+libboost-all-dev \
+libsqlite3-0 libsqlite3-dev \
+curl libcurl3 libcurl4-openssl-dev \
+libusb-0.1-4 libusb-dev \
+zlib1g-dev \
+libudev-dev \
+python3-dev python3-pip \
+       fail2ban && \
     # linux-headers-generic
 
 ## OpenZwave installation
@@ -54,9 +54,9 @@ git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbe
 
 # remove git and tmp dirs
 apt-get remove -y git cmake linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
-   apt-get autoremove -y && \ 
-   apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
+apt-get autoremove -y && \ 
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
 
 
 VOLUME /config
