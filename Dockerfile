@@ -1,4 +1,4 @@
-FROM centos
+FROM debian:stretch
 
 ENV MKDOMOTICZ_UPDATED=20190316
 
@@ -6,9 +6,10 @@ ARG DOMOTICZ_VERSION="master"
 
 # install packages
 RUN apt-get update && apt-get install -y \
+wget \
 git \
 libssl1.0.2 libssl-dev \
-build-essential cmake \
+build-essential \
 libboost-all-dev \
 libsqlite3-0 libsqlite3-dev \
 curl libcurl3 libcurl4-openssl-dev \
@@ -18,6 +19,16 @@ libudev-dev \
 python3-dev python3-pip \
 fail2ban && \
     # linux-headers-generic
+## install cmake
+wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz && \
+tar -xzvf cmake-3.17.0.tar.gz && \
+rm cmake-3.17.0.tar.gz && \
+cd cmake-3.17.0 && \
+./bootstrap && \
+make && \
+make install && \
+cd .. && \
+rm -Rf cmake-3.17.0 && \
 
 ## OpenZwave installation
 # grep git version of openzwave
