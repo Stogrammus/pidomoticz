@@ -12,7 +12,7 @@ g++ \
 libcurl4-gnutls-dev \
 libcereal-dev \
 liblua5.3-dev \
-uthash-dev\
+uthash-dev \
 wget \
 git \
 libssl1.0.2 libssl-dev \
