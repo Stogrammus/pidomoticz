@@ -52,7 +52,7 @@ make && \
 ln -s /src/open-zwave /src/open-zwave-read-only
 # Liboost
 
-RUN apt remove --purge --auto-remove libboost-dev libboost-thread-dev libboost-system-dev libboost-atomic-dev libboost-regex-dev libboost-chrono-dev && \
+RUN apt remove -y --purge --auto-remove libboost-dev libboost-thread-dev libboost-system-dev libboost-atomic-dev libboost-regex-dev libboost-chrono-dev && \
 mkdir boost && cd boost && wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.gz && tar xfz boost_1_72_0.tar.gz && \
 cd boost_1_72_0/ && ./bootstrap.sh && ./b2 stage threading=multi link=static --with-thread --with-system && ./b2 install threading=multi link=static --with-thread --with-system && \
 cd ../../ && rm -Rf boost/
@@ -82,8 +82,8 @@ cd /src/domoticz && \
 git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt && \
 
 # remove git and tmp dirs
-#apt-get remove -y linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
-#apt-get autoremove -y && \ 
+apt-get remove -y linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
+apt-get autoremove -y && \ 
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
 
