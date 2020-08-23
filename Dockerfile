@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian
 
 ENV MKDOMOTICZ_UPDATED=20190316
 
