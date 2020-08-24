@@ -47,7 +47,7 @@ RUN git clone --depth 2 https://github.com/OpenZWave/open-zwave.git /src/open-zw
 cd /src/open-zwave && \
 # compile
 make && \
-sudo make install && \
+make install && \
 
 # "install" in order to be found by domoticz
 ln -s /src/open-zwave /src/open-zwave-read-only
