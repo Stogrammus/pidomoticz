@@ -59,7 +59,7 @@ cd boost_1_72_0/ && ./bootstrap.sh && ./b2 stage threading=multi link=static --w
 cd ../../ && rm -Rf boost/
 
 # install python3.6
-RUN apt-get update && apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev && \
+RUN apt-get update && apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev && \
 libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev && \
 wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz && \
 tar zxf Python-3.6.8.tgz && \
