@@ -71,8 +71,8 @@ COPY bashrc ~/.bashrc
 
 ## Install python-miio
 RUN python3.6 -m pip install --upgrade pip && python3.6 -m pip install -U setuptools && python3.6 -m pip install -U wheel && \
-python3.6 -m pip install -U cffi && python3.6 -m pip install -U python-miio && \
-cd /src/domoticz/plugins/ && git clone https://github.com/deennoo/domoticz-Xiaomi-Led-Lamp.git && chmod 777 /src/domoticz/plugins/domoticz-Xiaomi-Led-Lamp/MyBulb.py
+python3.6 -m pip install -U cffi && python3.6 -m pip install -U python-miio
+
 ## Domoticz installation
 # clone git source in src
 
@@ -93,6 +93,9 @@ cd /tmp && \
 
 # ouimeaux
 pip3 install -U ouimeaux
+# add domoticz-Xiaomi-Led-Lamp
+
+RUN cd /src/domoticz/plugins/ && git clone https://github.com/deennoo/domoticz-Xiaomi-Led-Lamp.git && chmod 777 /src/domoticz/plugins/domoticz-Xiaomi-Led-Lamp/MyBulb.py
 
 # add zigbee2mqtt plugin
 RUN cd /src/domoticz && \
