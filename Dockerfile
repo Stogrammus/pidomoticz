@@ -28,7 +28,18 @@ zlib1g-dev \
 libudev-dev \
 python3-dev \
 python3-pip \
-fail2ban
+fail2ban \
+build-essential \
+tk-dev \
+libncurses5-dev \
+libncursesw5-dev \
+libreadline6-dev \
+libdb5.3-dev \
+libgdbm-dev \
+libsqlite3-dev \
+libssl-dev \
+libffi-dev \
+
 # linux-headers-generic
 ## install cmake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz && \
@@ -58,20 +69,25 @@ mkdir boost && cd boost && wget https://dl.bintray.com/boostorg/release/1.72.0/s
 cd boost_1_72_0/ && ./bootstrap.sh && ./b2 stage threading=multi link=static --with-thread --with-system && ./b2 install threading=multi link=static --with-thread --with-system && \
 cd ../../ && rm -Rf boost/
 
-# install python3.6
-RUN apt-get update && apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libffi-dev && \
-wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz && \
-tar zxf Python-3.6.8.tgz && \
-cd Python-3.6.8 && \
-./configure && \
-make -j 4 && \
-make altinstall
+# install python3.7
+COPY sources.list /etc/apt/sources.list
+RUN apt-get update && apt-get install -y python3.7 libssl-dev && \
+## Install python-miio
+python3.7 -m pip install -U python-miio
 
-COPY bashrc ~/.bashrc
+#RUN apt-get update && apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libffi-dev && \
+#wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz && \
+#tar zxf Python-3.6.8.tgz && \
+#cd Python-3.6.8 && \
+#./configure && \
+#make -j 4 && \
+#make altinstall
+
+COPY bashrc /root/.bashrc
 
 ## Install python-miio
-RUN python3.6 -m pip install --upgrade pip && python3.6 -m pip install -U setuptools && python3.6 -m pip install -U wheel && \
-python3.6 -m pip install -U cffi && python3.6 -m pip install -U python-miio
+#RUN python3.6 -m pip install --upgrade pip && python3.6 -m pip install -U setuptools && python3.6 -m pip install -U wheel && \
+#python3.6 -m pip install -U cffi && python3.6 -m pip install -U python-miio
 
 ## Domoticz installation
 # clone git source in src
@@ -82,7 +98,7 @@ RUN git clone -b "${DOMOTICZ_VERSION}" --depth 2 https://github.com/domoticz/dom
 cd /src/domoticz && \
 git fetch --unshallow && \
 # prepare makefile
-cmake -DCMAKE_BUILD_TYPE=Release . && \
+cmake -DCMAKE_BUILD_TYPE=Release . -DPYTHON_LIBRARY=/usr/lib/arm-linux-gnueabihf/libpython3.7m.so -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m && \
 # compile
 make && \
 # Install
@@ -93,13 +109,13 @@ cd /tmp && \
 
 # ouimeaux
 pip3 install -U ouimeaux
-# add domoticz-Xiaomi-Led-Lamp
 
+# add domoticz-Xiaomi-Led-Lamp
 RUN cd /src/domoticz/plugins/ && git clone https://github.com/deennoo/domoticz-Xiaomi-Led-Lamp.git && chmod 777 /src/domoticz/plugins/domoticz-Xiaomi-Led-Lamp/MyBulb.py
 
 # add zigbee2mqtt plugin
-RUN cd /src/domoticz && \
-git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt
+RUN cd /src/domoticz/plugins/ && git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt
+
 
 # remove git and tmp dirs
 
