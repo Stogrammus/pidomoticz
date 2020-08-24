@@ -16,4 +16,4 @@
 # alias rm='rm -i'
 # alias cp='cp -i'
 # alias mv='mv -i'
-alias python='/usr/local/bin/python3.6'
+alias python='/usr/local/bin/python3.7'
