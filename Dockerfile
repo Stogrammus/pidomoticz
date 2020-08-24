@@ -70,7 +70,8 @@ make altinstall
 COPY bashrc ~/.bashrc
 
 ## Install python-miio
-RUN python3.6 -m pip install --upgrade pip && python3.6 -m pip install -U python-miio && \
+RUN python3.6 -m pip install --upgrade pip && python3.6 -m pip install -U setuptools && python3.6 -m pip install -U wheel && \
+python3.6 -m pip install -U cffi python3.6 -m pip install -U python-miio && \
 cd /src/domoticz/plugins/ && git clone https://github.com/deennoo/domoticz-Xiaomi-Led-Lamp.git && chmod 777 /src/domoticz/plugins/domoticz-Xiaomi-Led-Lamp/MyBulb.py
 ## Domoticz installation
 # clone git source in src
