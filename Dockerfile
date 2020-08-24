@@ -1,6 +1,6 @@
 FROM debian:stretch
 
-ENV MKDOMOTICZ_UPDATED=20190316
+ENV MKDOMOTICZ_UPDATED=20200427
 
 ARG DOMOTICZ_VERSION="master"
 
@@ -29,7 +29,7 @@ libudev-dev \
 python3-dev \
 python3-pip \
 fail2ban
-    # linux-headers-generic
+# linux-headers-generic
 ## install cmake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz && \
 tar -xzvf cmake-3.17.0.tar.gz && \
@@ -58,8 +58,24 @@ mkdir boost && cd boost && wget https://dl.bintray.com/boostorg/release/1.72.0/s
 cd boost_1_72_0/ && ./bootstrap.sh && ./b2 stage threading=multi link=static --with-thread --with-system && ./b2 install threading=multi link=static --with-thread --with-system && \
 cd ../../ && rm -Rf boost/
 
+# install python3.6
+RUN apt-get update && apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev && \
+libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev && \
+wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz && \
+tar zxf Python-3.6.8.tgz && \
+cd Python-3.6.8 && \
+./configure && \
+make -j 4 && \
+make altinstall
+
+COPY bashrc ~/.bashrc
+
+## Install python-miio
+RUN pip3 install -U python-miio && \
+cd /src/domoticz/plugins/ && git clone https://github.com/deennoo/domoticz-Xiaomi-Led-Lamp.git && chmod 777 /src/domoticz/plugins/domoticz-Xiaomi-Led-Lamp/MyBulb.py
 ## Domoticz installation
 # clone git source in src
+
 
 RUN git clone -b "${DOMOTICZ_VERSION}" --depth 2 https://github.com/domoticz/domoticz.git /src/domoticz && \
 # Domoticz needs the full history to be able to calculate the version string
@@ -76,18 +92,18 @@ cd /tmp && \
 # rm -Rf /src/domoticz && \
 
 # ouimeaux
-pip3 install -U ouimeaux && \
+pip3 install -U ouimeaux
 
 # add zigbee2mqtt plugin
-cd /src/domoticz && \
-git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt && \
+RUN cd /src/domoticz && \
+git clone https://github.com/stas-demydiuk/domoticz-zigbee2mqtt-plugin.git zigbee2mqtt
 
 # remove git and tmp dirs
-apt-get remove -y linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
+
+RUN apt-get remove -y linux-headers-amd64 build-essential libssl-dev libboost-dev libboost-thread-dev libboost-system-dev libsqlite3-dev libcurl4-openssl-dev libusb-dev zlib1g-dev libudev-dev && \
 apt-get autoremove -y && \ 
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
-
 
 VOLUME /config
 
