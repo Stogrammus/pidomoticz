@@ -38,7 +38,7 @@ libdb5.3-dev \
 libgdbm-dev \
 libsqlite3-dev \
 libssl-dev \
-libffi-dev \
+libffi-dev
 
 # linux-headers-generic
 ## install cmake
